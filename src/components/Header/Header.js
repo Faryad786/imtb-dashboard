@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { AppBar, Toolbar, Typography, IconButton, InputBase, Box, Menu, MenuItem } from "@mui/material";
-import { Search, Close } from "@mui/icons-material";
+import React, { useState, useEffect } from "react";
+import { AppBar, Toolbar, Typography, IconButton, InputBase, Box, Menu, MenuItem, CssBaseline } from "@mui/material";
+import { Search, Close, WbSunny, Brightness4 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
 import { useMediaQuery, useTheme } from '@mui/material';
 
@@ -20,6 +20,7 @@ const Header = () => {
   const [showSearch, setShowSearch] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);
   const [anchorE2, setAnchorE2] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(false); // State for dark mode
 
   const handleSearchClick = () => {
     setShowSearch(!showSearch);
@@ -28,7 +29,7 @@ const Header = () => {
   const handleMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
-  
+
   const handlePeopleOpen = (event) => {
     setAnchorE2(event.currentTarget);
   };
@@ -36,87 +37,40 @@ const Header = () => {
   const handleMenuClose = () => {
     setAnchorEl(null);
   };
+
   const handlePeople = () => {
     setAnchorE2(null);
   };
 
+  const handleThemeToggle = () => {
+    setIsDarkMode(!isDarkMode); // Toggle between dark and light mode
+  };
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.body.style.backgroundColor = "#121212"; // Dark mode background
+    } else {
+      document.body.style.backgroundColor = "#fff"; // Light mode background
+    }
+  }, [isDarkMode]);
+
   return (
     <>
-      <AppBar position="static" sx={{ backgroundColor: "#032541" }}>
+      <CssBaseline /> {/* Ensures baseline styles for dark/light mode */}
+      <AppBar position="static" sx={{ backgroundColor: isDarkMode ? "#333" : "#032541" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-around" }}>
           {/* Logo on the Left */}
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            {/* Logo */}
-            {/* <Typography variant="h6" sx={{ cursor: "pointer", fontWeight: "bold" }}>
-              IMTB ----
-            </Typography> */}
-                      <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="The Movie Database (TMDB)" width="154" height="20"/>
-
-            {/* Navbar Links */}
+            {/* <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="The Movie Database (TMDB)" width="154" height="20"/> */}
             <Box sx={{ display: "flex", gap: 3 }}>
-              <Typography
-                variant="body1"
-                sx={{
-                  cursor: "pointer",
-                  fontSize: "16px",
-                  fontFamily: "Source Sans Pro, Arial, sans-serif",
-                  fontWeight: 600,
-                  color: "#fffff",
-                  textTransform: "capitalize",
-                  letterSpacing: "0.5px",
-                }}
-                onClick={handleMenuClick}
-              >
-                Movies
-              </Typography>
-              <Typography
-                variant="body1"
-                sx={{
-                  cursor: "pointer",
-                  fontSize: "16px",
-                  fontFamily: "Source Sans Pro, Arial, sans-serif",
-                  fontWeight: 600,
-                  color: "#fffff",
-                  textTransform: "capitalize",
-                  letterSpacing: "0.5px",
-                }}
-                onClick={handleMenuClick}
-              >
-                TV Shows
-              </Typography>
-              <Typography
-                variant="body1"
-                sx={{
-                  cursor: "pointer",
-                  fontSize: "16px",
-                  fontFamily: "Source Sans Pro, Arial, sans-serif",
-                  fontWeight: 600,
-                  color: "#fffff",
-                  textTransform: "capitalize",
-                  letterSpacing: "0.5px",
-                }}
-                onClick={handlePeopleOpen}
-              >
-                People
-              </Typography>
+              <Typography variant="body1" sx={{ cursor: "pointer", fontSize: "20px", fontWeight: 600, color: "#0fadbf" }} onClick={handleMenuClick}>IMTB</Typography>
+              <Typography variant="body1" sx={{ cursor: "pointer", fontSize: "16px", fontWeight: 600, color: "#fff" }} onClick={handleMenuClick}>Movies</Typography>
+              <Typography variant="body1" sx={{ cursor: "pointer", fontSize: "16px", fontWeight: 600, color: "#fff" }} onClick={handleMenuClick}>TV Shows</Typography>
+              <Typography variant="body1" sx={{ cursor: "pointer", fontSize: "16px", fontWeight: 600, color: "#fff" }} onClick={handlePeopleOpen}>People</Typography>
               <Menu anchorEl={anchorE2} open={Boolean(anchorE2)} onClose={handlePeople}>
                 <MenuItem onClick={handlePeople}>Popular People</MenuItem>
               </Menu>
-              <Typography
-                variant="body1"
-                sx={{
-                  cursor: "pointer",
-                  fontSize: "16px",
-                  fontFamily: "Source Sans Pro, Arial, sans-serif",
-                  fontWeight: 600,
-                  color: "#fffff",
-                  textTransform: "capitalize",
-                  letterSpacing: "0.5px",
-                }}
-                onClick={handleMenuClick}
-              >
-                More
-              </Typography>
+              <Typography variant="body1" sx={{ cursor: "pointer", fontSize: "16px", fontWeight: 600, color: "#fff" }} onClick={handleMenuClick}>More</Typography>
             </Box>
           </Box>
 
@@ -127,12 +81,16 @@ const Header = () => {
             <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
           </Menu>
 
-          {/* Search Icon on the Right */}
-          <Box>
+          {/* Search Icon and Theme Toggle on the Right */}
+          <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <IconButton color="inherit" onClick={handleSearchClick}>
-              {showSearch ? <Close /> : <Search />}
+              {showSearch ? <Close /> : <Search  sx={{ color: "#0fadbf" }} />}
+            </IconButton>
+            <IconButton color="inherit" onClick={handleThemeToggle}>
+              {isDarkMode ? <WbSunny /> : <Brightness4 />}
             </IconButton>
           </Box>
+          
         </Toolbar>
       </AppBar>
 
@@ -140,7 +98,7 @@ const Header = () => {
       {showSearch && (
         <Box sx={{ display: "flex", justifyContent: "center", padding: "10px" }}>
           <SearchContainer>
-            <InputBase placeholder="Search for a movies,tvshows,person" fullWidth />
+            <InputBase placeholder="Search for movies, tv shows, or people" fullWidth />
           </SearchContainer>
         </Box>
       )}
