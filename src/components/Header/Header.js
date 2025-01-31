@@ -48,16 +48,16 @@ const Header = () => {
 
   useEffect(() => {
     if (isDarkMode) {
-      document.body.style.backgroundColor = "#121212"; // Dark mode background
+      document.body.style.backgroundColor = "#121212"; 
     } else {
-      document.body.style.backgroundColor = "#fff"; // Light mode background
+      document.body.style.backgroundColor = "#fff"; 
     }
   }, [isDarkMode]);
 
   return (
     <>
-      <CssBaseline /> {/* Ensures baseline styles for dark/light mode */}
-      <AppBar position="static" sx={{ backgroundColor: isDarkMode ? "#333" : "#032541" }}>
+      <CssBaseline /> 
+      <AppBar position="sticky" sx={{ backgroundColor: isDarkMode ? "black" : "#032541" }}>
         <Toolbar sx={{ display: "flex", justifyContent: "space-around" }}>
           {/* Logo on the Left */}
           <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
