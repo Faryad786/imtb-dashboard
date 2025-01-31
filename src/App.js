@@ -2,8 +2,10 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { ThemeProvider, CssBaseline } from "@mui/material";
 import { useState } from "react";
 import Header from "./components/Header/Header";
-import MoviesList from "./components/Page/MoviePage";
 import { lightTheme, darkTheme } from "../src/theme";
+import TrendingMovies from "./components/TrendingMovies/TrendingMovies";
+
+import MovieDetails from "./components/moviedetails/MovieDetails";
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -18,8 +20,10 @@ function App() {
       <Router>
         <Header isDarkMode={isDarkMode} toggleTheme={toggleTheme} />
         <Routes>
-          <Route path="/" element={<MoviesList />} />
+          <Route path="/" element={<TrendingMovies />} />
+          <Route path="/zxyxvyXdF/:id" element={<MovieDetails />} />
         </Routes>
+       
       </Router>
     </ThemeProvider>
   );

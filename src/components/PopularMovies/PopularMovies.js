@@ -1,23 +1,28 @@
-import React, { useEffect, useState } from 'react';
-import { Grid, Typography, Container, Box } from '@mui/material';
+import React, { useEffect, useState, useRef } from 'react';
+import { Typography, Container, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-const MoviesPage = () => {
+const PopularMovies = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
-  const navigate = useNavigate();  
-  const fetchMovies = async () => {
+  const [page, setPage] = useState(1); // Track the current page
+  const [totalPages, setTotalPages] = useState(1); // Track total pages
+  const navigate = useNavigate();
+  const scrollContainerRef = useRef(null); // Reference to the scroll container
+
+  const fetchMovies = async (pageNumber) => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/api/tmdb/all`;
+      const url = `${process.env.REACT_APP_API_URL}/api/tmdb/popular?page=${pageNumber}`;
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
       if (Array.isArray(data.results)) {
-        setMovies(data.results);
+        setMovies((prevMovies) => [...prevMovies, ...data.results]); // Append the new movies to the existing list
+        setTotalPages(data.total_pages); // Set total pages from the API response
       } else {
         throw new Error('Invalid data format');
       }
@@ -29,11 +34,35 @@ const MoviesPage = () => {
   };
 
   useEffect(() => {
-    fetchMovies();
-  }, []);
+    fetchMovies(page);
+  }, [page]); // Fetch new page data when the page state changes
+
+  useEffect(() => {
+    // Only add the event listener if the container is present
+    const scrollContainer = scrollContainerRef.current;
+
+    const handleScroll = () => {
+      if (scrollContainer) {
+        const { scrollLeft, scrollWidth, clientWidth } = scrollContainer;
+        if (scrollLeft + clientWidth >= scrollWidth - 10 && page < totalPages) {
+          setPage(page + 1); // Load the next page
+        }
+      }
+    };
+
+    if (scrollContainer) {
+      scrollContainer.addEventListener('scroll', handleScroll);
+    }
+
+    return () => {
+      if (scrollContainer) {
+        scrollContainer.removeEventListener('scroll', handleScroll);
+      }
+    };
+  }, [page, totalPages]); // Re-run when page or totalPages changes
 
   const handleMovieClick = (movieId) => {
-    navigate(`/videoPlay/${movieId}`);
+    navigate(`/zxyxvyXdF/${movieId}`);
   };
 
   return (
@@ -43,32 +72,29 @@ const MoviesPage = () => {
           variant="h4"
           gutterBottom
           sx={{
-            textAlign: 'center',
             margin: '20px 0',
             fontWeight: 'bold',
             color: '#0fadbf',
-            fontFamily: 'Bebas Neue',
           }}
         >
-          мσνιєѕ
+          ᵂʰᵃᵗ'ˢ ᴾᵒᵖᵘˡᵃʳ
         </Typography>
-        {loading ? (
+        {loading && page === 1 ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <CircularProgressbar
-              value={100}
-              text={'Loading...'}
-              styles={buildStyles({
-                textColor: '#0fadbf',
-                pathColor: '#0fadbf',
-                trailColor: 'rgba(255, 255, 255, 0.2)',
-              })}
-            />
+            loading
           </Box>
         ) : (
-          <Box sx={{
-            display: 'flex', overflowX: 'auto', gap: 2, padding: '10px', scrollbarColor: "#0fadbf transparent",
-            scrollbarWidth: "thin",
-          }}>
+          <Box
+            ref={scrollContainerRef} 
+            sx={{
+              display: 'flex',
+              overflowX: 'auto',
+              gap: 2,
+              padding: '10px',
+              scrollbarColor: '#0fadbf transparent',
+              scrollbarWidth: 'thin',
+            }}
+          >
             {movies.map((movie) => (
               <Box
                 key={movie.id}
@@ -80,13 +106,11 @@ const MoviesPage = () => {
                   cursor: 'pointer',
                   position: 'relative',
                   boxShadow: '0 4px 12px rgba(15, 173, 191, 0.5)',
-
-                  transition: 'transform 0.3s ease, box-shadow 0.3s ease', 
+                  transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                   '&:hover': {
-                    transform: 'scale(1.05)', 
-                    boxShadow: '0 4px 12px rgba(15, 173, 191, 0.5)'
-                    ,
-                  }
+                    transform: 'scale(1.05)',
+                    boxShadow: '0 4px 12px rgba(15, 173, 191, 0.5)',
+                  },
                 }}
                 onClick={() => handleMovieClick(movie.id)}
               >
@@ -95,17 +119,17 @@ const MoviesPage = () => {
                   alt={`${movie.title} poster`}
                   style={{ width: '100%', height: '250px', borderRadius: '8px' }}
                   onError={(e) => (e.target.src = '/path/to/placeholder.jpg')}
-                />         
-                
+                />
+
                 <Box
                   sx={{
                     width: 40,
                     height: 40,
                     position: 'absolute',
-                    bottom: 75,
+                    bottom: 90,
                     left: 10,
                     backgroundColor: '#032541',
-                    borderRadius: '50%'
+                    borderRadius: '50%',
                   }}
                 >
                   <CircularProgressbar
@@ -119,7 +143,7 @@ const MoviesPage = () => {
                     })}
                   />
                 </Box>
-          
+
                 <Typography
                   variant="h6"
                   gutterBottom
@@ -129,7 +153,7 @@ const MoviesPage = () => {
                     padding: '10px',
                     fontSize: '12px',
                     textAlign: 'center',
-                    marginBottom:'0px'
+                    marginBottom: '0px',
                   }}
                 >
                   {movie.title}
@@ -140,26 +164,25 @@ const MoviesPage = () => {
                   sx={{
                     fontSize: '12px',
                     textAlign: 'center',
-                    marginTop:'0px',
-                    left:10,
-                    color:'gray',
-                    fontWeight:'bold',
-                    
+                    marginTop: '0px',
+                    left: 10,
+                    color: 'gray',
+                    fontWeight: 'bold',
                   }}
                 >
-                  {new Date(movie.release_date).toLocaleDateString("en-US", {
-                    month: "long",
-                    day: "2-digit",
-                    year: "numeric",
+                  {new Date(movie.release_date).toLocaleDateString('en-US', {
+                    month: 'long',
+                    day: '2-digit',
+                    year: 'numeric',
                   })}
                 </Typography>
               </Box>
             ))}
-          </Box>          
+          </Box>
         )}
       </Container>
     </div>
   );
 };
 
-export default MoviesPage;
+export default PopularMovies;
