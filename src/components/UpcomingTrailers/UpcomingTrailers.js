@@ -85,13 +85,14 @@ const UpcomingTrailers = () => {
 
     return (
         <div>
+            <Container>
             <Box
                 sx={{
                     display: 'flex',
                     alignItems: 'center',
                     margin: '20px 0',
                     gap: '10px',
-                    marginLeft: '100px'
+                   
                 }}
             >
                 <Typography
@@ -126,7 +127,8 @@ const UpcomingTrailers = () => {
                         Upcoming
                     </Button>
                 </Box>
-            </Box>
+                </Box>
+                </Container>
 
             <div
                 style={{
@@ -134,7 +136,7 @@ const UpcomingTrailers = () => {
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
                     transition: 'background-image 0.3s ease',
-                    minHeight: '60vh',
+                    minHeight: '40vh',
                 }}
             >
                 <Container>
@@ -152,7 +154,7 @@ const UpcomingTrailers = () => {
                             <Box
                                 key={trailer.id}
                                 sx={{
-                                    width: 'calc(25% - 16px)',
+                                    width: 'calc(30% - 16px)',
                                     height: '200px',
                                     textAlign: 'center',
                                     flexShrink: 0,

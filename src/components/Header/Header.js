@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, IconButton, InputBase, Box, Menu, MenuItem, CssBaseline } from "@mui/material";
 import { Search, Close, WbSunny, Brightness4 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
-
+import { useNavigate } from "react-router-dom";
 
 const SearchContainer = styled("div")(() => ({
   display: "flex",
@@ -14,103 +14,83 @@ const SearchContainer = styled("div")(() => ({
 }));
 
 const Header = () => {
-
-  
-
   const [showSearch, setShowSearch] = useState(false);
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [anchorE2, setAnchorE2] = useState(null);
-  const [isDarkMode, setIsDarkMode] = useState(false); // State for dark mode
-
+  const [anchorMovie, setAnchorMovie] = useState(null);
+  const [anchorTV, setAnchorTV] = useState(null);
+  const [anchorPeople, setAnchorPeople] = useState(null);
+  const [anchorMore, setAnchorMore] = useState(null);
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const navigate = useNavigate();
   const handleSearchClick = () => {
     setShowSearch(!showSearch);
   };
 
-  const handleMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handlePeopleOpen = (event) => {
-    setAnchorE2(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const handlePeople = () => {
-    setAnchorE2(null);
-  };
-
   const handleThemeToggle = () => {
-    setIsDarkMode(!isDarkMode); // Toggle between dark and light mode
+    setIsDarkMode(!isDarkMode);
   };
 
   useEffect(() => {
-    if (isDarkMode) {
-      document.body.style.backgroundColor = "#121212"; 
-    } else {
-      document.body.style.backgroundColor = "#fff"; 
-    }
+    document.body.style.backgroundColor = isDarkMode ? "#121212" : "#fff";
   }, [isDarkMode]);
 
   return (
     <>
-      <CssBaseline /> 
+      <CssBaseline />
       <AppBar position="sticky" sx={{ backgroundColor: isDarkMode ? "black" : "#032541" }}>
-        <Toolbar sx={{ display: "flex", justifyContent: "space-around" }}>
-          {/* Logo on the Left */}
-          <Box sx={{ display: "flex", alignItems: "center", gap: "10px" }}>
-            {/* <img src="https://www.themoviedb.org/assets/2/v4/logos/v2/blue_short-8e7b30f73a4020692ccca9c88bafe5dcb6f8a62a4c6bc55cd9ba82bb2cd95f6c.svg" alt="The Movie Database (TMDB)" width="154" height="20"/> */}
-            <Box sx={{ display: "flex", gap: 3 }}>
-              <Box sx={{cursor:'pointer', display:'flex'}}>
-              <Typography
-                variant="body1"
-                sx={{
-                  cursor: "pointer",
-                  fontSize: "20px",
-                  fontWeight: 'bold',
-                  background: "linear-gradient(to right, #0fadbf 20%, yellow 80%)",
-                  WebkitBackgroundClip: "text",
-                  WebkitTextFillColor: "transparent",
-                  marginRight:'5px'
-                }}
-                onClick={handleMenuClick}
-              >
-                IMTB
-              </Typography>
+        <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+          <Box sx={{ display: "flex", alignItems: "center", gap: "20px" }}>
+            <Typography
+              variant="h6"
+              sx={{
+                cursor: "pointer",
+                fontWeight: "bold",
+                background: "linear-gradient(to right, #0fadbf 20%, yellow 80%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+              }}
+            >
+              IMTB
+            </Typography>
 
-              <Box
-                sx={{
-                  width: "50px",
-                  height: "16px",
-                  background: "linear-gradient(to right, #0fadbf 20%, yellow 80%)",
-                  borderRadius: "20px",
-                  marginTop: "6px",
-                  
-                  cursor:'pointer'
-                }}
-                ></Box>
-                </Box>
+            <Typography onClick={(e) => setAnchorMovie(e.currentTarget)} sx={{ cursor: "pointer", color: "#fff" }}>
+              Movies
+            </Typography>
+            <Menu anchorEl={anchorMovie} open={Boolean(anchorMovie)} onClose={() => setAnchorMovie(null)}>
+              <MenuItem onClick={() => { setAnchorMovie(null); navigate('/movies/PopularMovies'); }}>
+                Popular
+              </MenuItem>
 
-              <Typography variant="body1" sx={{ cursor: "pointer", fontSize: "16px", fontWeight: 600, color: "#fff" }} onClick={handleMenuClick}>Movies</Typography>
-              <Typography variant="body1" sx={{ cursor: "pointer", fontSize: "16px", fontWeight: 600, color: "#fff" }} onClick={handleMenuClick}>TV Shows</Typography>
-              <Typography variant="body1" sx={{ cursor: "pointer", fontSize: "16px", fontWeight: 600, color: "#fff" }} onClick={handlePeopleOpen}>People</Typography>
-              <Menu anchorEl={anchorE2} open={Boolean(anchorE2)} onClose={handlePeople}>
-                <MenuItem onClick={handlePeople}>Popular People</MenuItem>
-              </Menu>
-              <Typography variant="body1" sx={{ cursor: "pointer", fontSize: "16px", fontWeight: 600, color: "#fff" }} onClick={handleMenuClick}>More</Typography>
-            </Box>
+              <MenuItem onClick={() => { setAnchorMovie(null); navigate('/movies/nowPlaying')}}>Now Playing</MenuItem>
+              <MenuItem onClick={() => { setAnchorMovie(null); navigate('/movies/topRated')}}>Top Rated</MenuItem>
+              <MenuItem onClick={() => { setAnchorMovie(null); navigate('/movies/upComing')}}>Upcoming</MenuItem>
+            </Menu>
+
+            <Typography onClick={(e) => setAnchorTV(e.currentTarget)} sx={{ cursor: "pointer", color: "#fff" }}>
+              TV Shows
+            </Typography>
+            <Menu anchorEl={anchorTV} open={Boolean(anchorTV)} onClose={() => setAnchorTV(null)}>
+              <MenuItem onClick={() => setAnchorTV(null)}>Trending</MenuItem>
+              <MenuItem onClick={() => setAnchorTV(null)}>Upcoming</MenuItem>
+              <MenuItem onClick={() => setAnchorTV(null)}>Top Rated</MenuItem>
+            </Menu>
+
+            <Typography onClick={(e) => setAnchorPeople(e.currentTarget)} sx={{ cursor: "pointer", color: "#fff" }}>
+              People
+            </Typography>
+            <Menu anchorEl={anchorPeople} open={Boolean(anchorPeople)} onClose={() => setAnchorPeople(null)}>
+              <MenuItem onClick={() => { setAnchorPeople(null); navigate('/people/popularPeople')}}>Popular People</MenuItem>
+            </Menu>
+
+            <Typography onClick={(e) => setAnchorMore(e.currentTarget)} sx={{ cursor: "pointer", color: "#fff" }}>
+              More
+            </Typography>
+            <Menu anchorEl={anchorMore} open={Boolean(anchorMore)} onClose={() => setAnchorMore(null)}>
+              <MenuItem onClick={() => setAnchorMore(null)}>Trending</MenuItem>
+              <MenuItem onClick={() => setAnchorMore(null)}>Top Rated</MenuItem>
+              <MenuItem onClick={() => setAnchorMore(null)}>Upcoming</MenuItem>
+            </Menu>
           </Box>
 
-          {/* More Menu */}
-          <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleMenuClose}>
-            <MenuItem onClick={handleMenuClose}>Trending</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Upcoming</MenuItem>
-            <MenuItem onClick={handleMenuClose}>Top Rated</MenuItem>
-          </Menu>
-
-          {/* Search Icon and Theme Toggle on the Right */}
           <Box sx={{ display: "flex", alignItems: "center", gap: 2 }}>
             <IconButton color="inherit" onClick={handleSearchClick}>
               {showSearch ? <Close /> : <Search sx={{ color: "#0fadbf" }} />}
@@ -119,11 +99,9 @@ const Header = () => {
               {isDarkMode ? <WbSunny /> : <Brightness4 />}
             </IconButton>
           </Box>
-
         </Toolbar>
       </AppBar>
 
-      {/* Search Field Below Navbar */}
       {showSearch && (
         <Box sx={{ display: "flex", justifyContent: "center", padding: "10px" }}>
           <SearchContainer>
