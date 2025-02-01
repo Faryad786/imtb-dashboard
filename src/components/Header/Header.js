@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 import { AppBar, Toolbar, Typography, IconButton, InputBase, Box, Menu, MenuItem, CssBaseline } from "@mui/material";
 import { Search, Close, WbSunny, Brightness4 } from "@mui/icons-material";
 import { styled } from "@mui/material/styles";
-import { useMediaQuery, useTheme } from '@mui/material';
 
-const SearchContainer = styled("div")(({ theme }) => ({
+
+const SearchContainer = styled("div")(() => ({
   display: "flex",
   alignItems: "center",
   backgroundColor: "#f1f1f1",
@@ -14,8 +14,8 @@ const SearchContainer = styled("div")(({ theme }) => ({
 }));
 
 const Header = () => {
-  const theme = useTheme(); // Get the theme object
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Use media query for mobile
+
+  
 
   const [showSearch, setShowSearch] = useState(false);
   const [anchorEl, setAnchorEl] = useState(null);

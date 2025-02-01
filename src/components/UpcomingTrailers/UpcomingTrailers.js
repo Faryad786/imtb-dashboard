@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
-    Grid,
-    Card,
-    CardContent,
+    
     Typography,
     CircularProgress,
     Container,
@@ -215,7 +213,7 @@ const UpcomingTrailers = () => {
                                     borderRadius: '8px',
                                     display: 'flex',
                                     flexDirection: 'column',
-                                    position: 'relative',
+                                    
                                 }}
                             >
                                 <Box

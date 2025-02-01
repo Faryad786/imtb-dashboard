@@ -5,11 +5,11 @@ import 'react-circular-progressbar/dist/styles.css';
 import { Container, Box, Typography, Card, CardContent, CardMedia, Button, Fade, IconButton, Modal } from '@mui/material';
 import { motion } from 'framer-motion'
 import CloseIcon from '@mui/icons-material/Close';
-import { Movie, Theaters, PlayCircle } from "@mui/icons-material";
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import SentimentSatisfiedSharpIcon from '@mui/icons-material/SentimentSatisfiedSharp';
-import FavoriteSharpIcon from '@mui/icons-material/FavoriteSharp';
-import Diversity1SharpIcon from '@mui/icons-material/Diversity1Sharp';
+// import { Movie, Theaters, PlayCircle } from "@mui/icons-material";
+// import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
+// import SentimentSatisfiedSharpIcon from '@mui/icons-material/SentimentSatisfiedSharp';
+// import FavoriteSharpIcon from '@mui/icons-material/FavoriteSharp';
+// import Diversity1SharpIcon from '@mui/icons-material/Diversity1Sharp';
 const MovieDetails = () => {
     const { id } = useParams();
     const [movie, setMovie] = useState(null);
