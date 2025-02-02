@@ -175,6 +175,7 @@ const UpcomingTrailers = () => {
                                         height: '200px',
                                         objectFit: 'cover',
                                         borderRadius: '8px',
+                                        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                                     }}
                                 />
                                 <IconButton

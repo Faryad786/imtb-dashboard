@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 
-const PopularMovies = () => {
+const CurrentYearmovies = () => {
   const [movies, setMovies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [page, setPage] = useState(1); // Track the current page
@@ -14,14 +14,14 @@ const PopularMovies = () => {
 
   const fetchMovies = async (pageNumber) => {
     try {
-      const url = `${process.env.REACT_APP_API_URL}/api/tmdb/popular?page=${pageNumber}`;
+      const url = `${process.env.REACT_APP_API_URL}/api/tmdb/this-year?page=${pageNumber}`;
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
       const data = await response.json();
-      if (Array.isArray(data.results)) {
-        setMovies((prevMovies) => [...prevMovies, ...data.results]); // Append the new movies to the existing list
+      if (Array.isArray(data.movies)) {
+        setMovies((prevMovies) => [...prevMovies, ...data.movies]); // Append the new movies to the existing list
         setTotalPages(data.total_pages); // Set total pages from the API response
       } else {
         throw new Error('Invalid data format');
@@ -69,7 +69,7 @@ const PopularMovies = () => {
     <div>
       <Container>
         <Typography
-          variant="h4"
+          variant="h5"
           gutterBottom
           sx={{
             margin: '20px 0',
@@ -77,7 +77,7 @@ const PopularMovies = () => {
             color: '#0fadbf',
           }}
         >
-          ᵂʰᵃᵗ'ˢ ᴾᵒᵖᵘˡᵃʳ
+          This year movies
         </Typography>
         {loading && page === 1 ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -185,4 +185,4 @@ const PopularMovies = () => {
   );
 };
 
-export default PopularMovies;
+export default CurrentYearmovies;

@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react';
 import { Grid, Card, CardMedia, CardContent, Typography, CircularProgress, Container, Button, Box } from '@mui/material';
 import axios from 'axios';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
+import { useNavigate } from 'react-router-dom';
 
 const TopRated = () => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1); // To track the current page
     const [hasMore, setHasMore] = useState(true); // To check if more movies are available
-
+    const navigate = useNavigate();
     useEffect(() => {
         // Fetch popular movies from the API
         const fetchMovies = async () => {
@@ -46,6 +47,11 @@ const TopRated = () => {
         return <CircularProgress />;
     }
 
+    const handleCardClick = (id) => {
+        // Navigate to /zxyxvyXdF/:id
+        navigate(`/zxyxvyXdF/${id}`);
+    };
+
     return (
         <div>
             <Container sx={{ marginTop: '30px' }}>
@@ -57,14 +63,17 @@ const TopRated = () => {
                         <Grid item xs={12} sm={6} md={2} key={movie.id}>
                             <Card
                                 sx={{
+                                    cursor:'pointer',
                                     backgroundColor: 'white',
                                     boxShadow: '0 4px 12px rgba(15, 173, 191, 0.5)',
                                     transition: 'transform 0.3s ease, box-shadow 0.3s ease',
                                     '&:hover': {
                                         transform: 'scale(1.05)',
                                         boxShadow: '0 4px 12px rgba(15, 173, 191, 0.5)',
-                                      },
+                                    },
+                                  
                                 }}
+                                onClick={() => handleCardClick(movie.id)}
                             >
                                 <CardMedia
                                     component="img"

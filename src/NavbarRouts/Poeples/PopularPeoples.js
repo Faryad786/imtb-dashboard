@@ -48,9 +48,9 @@ const PopularPeoples = () => {
     }
 
   
-    const handleMovieClick = (movie) => {
+    const handleMovieClick = (detail) => {
       // Navigate to the PeopleDetails page, passing the movie data
-      navigate(`/people/detail/${movie.id}`, { state: { movie } });
+      navigate(`/people/detail/${detail.id}`, { state: { detail } });
     };
     return (
         <div>
@@ -59,8 +59,8 @@ const PopularPeoples = () => {
                    Most Popular 
                 </Typography>
                 <Grid container spacing={3}>
-                    {movies.map((movie) => (
-                        <Grid item xs={12} sm={6} md={2} key={movie.id}>
+                    {movies.map((detail) => (
+                        <Grid item xs={12} sm={6} md={2} key={detail.id}>
                             <Card
                                 sx={{
                                     backgroundColor: 'white',
@@ -72,13 +72,13 @@ const PopularPeoples = () => {
                             },
                                     cursor:'pointer'
                           }}
-                          onClick={() => handleMovieClick(movie)}
+                          onClick={() => handleMovieClick(detail)}
                             >
                                 <CardMedia
                                     component="img"
                                     height="240"
-                                    image={`https://image.tmdb.org/t/p/w500${movie.profile_path}`}
-                                    alt={movie.title}
+                                    image={`https://image.tmdb.org/t/p/w500${detail.profile_path}`}
+                                    alt={detail.title}
                                 />
                                 <CardContent sx={{ position: 'relative' }}>
                                     {/* Vote Average Circular Progress */}
@@ -94,11 +94,11 @@ const PopularPeoples = () => {
                                         }}
                                     >
                                         <CircularProgressbar
-                                            value={movie.popularity * 10}
-                                            text={`${Math.round(movie.popularity * 10)}%`}
+                                            value={detail.popularity * 10}
+                                            text={`${Math.round(detail.popularity * 10)}%`}
                                             styles={buildStyles({
                                                 textColor: '#fff',
-                                                pathColor: movie.popularity >= 7 ? '#21c55d' : movie.popularity >= 5 ? '#ff9800' : '#f44336',
+                                                pathColor: detail.popularity >= 7 ? '#21c55d' : detail.popularity >= 5 ? '#ff9800' : '#f44336',
                                                 trailColor: 'rgba(255, 255, 255, 0.2)',
                                                 textSize: '25px',
                                             })}
@@ -115,7 +115,7 @@ const PopularPeoples = () => {
                                             fontWeight: 'bold',
                                         }}
                                     >
-                                        {movie.name}
+                                        {detail.name}
                                     </Typography>
                                 </CardContent>
                             </Card>
