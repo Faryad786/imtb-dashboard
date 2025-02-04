@@ -3,6 +3,7 @@ import { Typography, Container, Box } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
+import RecentMovies from '../recentlyAddMovies/RecentMovies';
 
 const CurrentYearmovies = () => {
   const [movies, setMovies] = useState([]);
@@ -67,6 +68,7 @@ const CurrentYearmovies = () => {
 
   return (
     <div>
+      <RecentMovies/>
       <Container>
         <Typography
           variant="h5"

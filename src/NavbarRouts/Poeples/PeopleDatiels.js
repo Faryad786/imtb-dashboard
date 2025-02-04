@@ -40,6 +40,10 @@ const PeopleDetails = () => {
         navigate(`/zxyxvyXdF/${id}`);
     };
 
+
+    const handleTvSeriesClick = (seriesId) => {
+        navigate(`/detail/tv-series/${seriesId}`);
+    };
     return (
         <Container sx={{ marginTop: '30px' }}>
             <Box sx={{ display: "flex", flexWrap: 'wrap' }}> {/* Removed the gap property */}
@@ -205,8 +209,11 @@ const PeopleDetails = () => {
                                     maxWidth: 150,
                                     boxShadow: "0 4px 12px rgba(15, 173, 191, 0.5)",
                                     borderRadius: "8px",
-                                    transition: "transform 0.3s ease-in-out"
-                                }}>
+                                    transition: "transform 0.3s ease-in-out",
+                                    cursor:'pointer'
+                                }}
+                                onClick={() => handleTvSeriesClick(credit.id)}
+                                >
                                     <motion.div whileHover={{ scale: 1.05 }}>
                                         <CardMedia
                                             component="img"

@@ -96,10 +96,10 @@ const UpcomingTrailers = () => {
                 }}
             >
                 <Typography
-                    variant="h4"
+                    variant="h5"
                     sx={{ fontWeight: 'bold', color: '#0fadbf' }}
                 >
-                    ᴸᵃᵗᵉˢᵗ ᵀʳᵃⁱˡᵉʳˢ
+                    Latest trailers
                 </Typography>
                 <Box variant="outlined" sx={{ ml: 1, border: '2px solid #032541', borderRadius: '20px' }}>
                     <Button

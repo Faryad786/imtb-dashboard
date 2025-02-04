@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Typography, Container, Box } from '@mui/material';
+import { Typography, Container, Box, CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -69,7 +69,7 @@ const PopularMovies = () => {
     <div>
       <Container>
         <Typography
-          variant="h4"
+          variant="h5"
           gutterBottom
           sx={{
             margin: '20px 0',
@@ -77,11 +77,11 @@ const PopularMovies = () => {
             color: '#0fadbf',
           }}
         >
-          ᵂʰᵃᵗ'ˢ ᴾᵒᵖᵘˡᵃʳ
+          What's Popular
         </Typography>
         {loading && page === 1 ? (
           <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            loading
+            <CircularProgress/>
           </Box>
         ) : (
           <Box

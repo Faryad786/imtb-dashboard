@@ -5,6 +5,7 @@ import 'react-circular-progressbar/dist/styles.css';
 import { Container, Box, Typography, Card, CardContent, CardMedia, Button, Fade, IconButton, Modal } from '@mui/material';
 import { motion } from 'framer-motion'
 import CloseIcon from '@mui/icons-material/Close';
+import axios from "axios";
 // import { Movie, Theaters, PlayCircle } from "@mui/icons-material";
 // import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
 // import SentimentSatisfiedSharpIcon from '@mui/icons-material/SentimentSatisfiedSharp';
@@ -17,6 +18,8 @@ const MovieDetails = () => {
     const [openModal, setOpenModal] = useState(false);
     const [selectedTrailer, setSelectedTrailer] = useState(null);
     const [selectedTrailerName, setSelectedTrailerName] = useState('');
+    const [open, setOpen] = useState(false);
+    const [movieUrl, setMovieUrl] = useState("");
     useEffect(() => {
         const fetchMovieDetails = async () => {
             try {
@@ -36,6 +39,17 @@ const MovieDetails = () => {
 
         fetchMovieDetails();
     }, [id]);
+
+
+    const handlePlayMovieClick = async () => {
+        try {
+            const response = await axios.get(`${process.env.REACT_APP_API_URL}/api/tmdb/dashboard/complete/${movie.id}`);
+            setMovieUrl(response.data);
+            setOpen(true);
+        } catch (error) {
+            console.error("Error fetching movie:", error);
+        }
+    };
 
     if (loading) {
         return (
@@ -64,6 +78,8 @@ const MovieDetails = () => {
         setSelectedTrailer(null);
         setSelectedTrailerName('');
     };
+
+    const handleClose = () => setOpen(false);
     return (
         <div style={{ padding: '10px' }}>
             <Box
@@ -172,7 +188,7 @@ const MovieDetails = () => {
                                 <SentimentSatisfiedSharpIcon fontSize="large"  sx={{color:'yellow'}}/>
                                 <FavoriteSharpIcon fontSize="large" sx={{color:'red'}}/>
                             </Box> */}
-                            
+
                             {/* Directors */}
                             {movie.directors?.length > 0 && (
                                 <Box>
@@ -268,7 +284,60 @@ const MovieDetails = () => {
                                     </Box>
                                 </Fade>
                             </Modal>
-                            <Button variant='contained' sx={{ borderRadius: '20px' }}>play movie</Button>
+                            <Button variant="contained" sx={{ borderRadius: "20px" }} onClick={handlePlayMovieClick}>
+                                Play Movie
+                            </Button>
+
+                            <Modal open={open} >
+                                <Box
+                                    sx={{
+                                        width: "60%",
+                                        height: "80%",
+                                        margin: "auto",
+                                        mt: 5,
+                                        p: 2,
+                                        backgroundColor: "black",
+                                        borderRadius: 2,
+                                        boxShadow: 24,
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        color:'white'
+                                    }}
+                                >
+                                    {/* Header */}
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            justifyContent: "space-between",
+                                            alignItems: "center",
+                                            borderBottom: "1px solid #ccc",
+                                            pb: 1,
+                                            mb: 2,
+                                        }}
+                                    >
+                                        <Typography variant="h6">{movieUrl.title || "Movie"}</Typography>
+                                        <IconButton onClick={handleClose}>
+                                            <CloseIcon sx={{color:'white'}}/>
+                                        </IconButton>
+                                    </Box>
+
+                                    {/* Movie Content */}
+                                    {movieUrl.links || movieUrl.trailerUrl ? (
+                                        <iframe
+                                            src={movieUrl.links || movieUrl.trailerUrl || 'Please wait for few days to release this movie'}
+                                            width="100%"
+                                            height="100%"
+                                            title={movieUrl.title}                                        
+                                            
+                                            frameBorder="0"
+                                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                                            allowFullScreen
+                                        />
+                                    ) : (
+                                        <Typography>Loading movie...</Typography>
+                                    )}
+                                </Box>
+                            </Modal>
                         </Box>
                     </Box>
                 </Box>

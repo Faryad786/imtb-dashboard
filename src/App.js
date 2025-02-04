@@ -19,6 +19,11 @@ import TopRatedMore from "./NavbarRouts/More/Toprated/TopRatedMore";
 import UpComingMore from "./NavbarRouts/More/Upcoming/UpComingMore";
 import PopularMovie from "./NavbarRouts/Movies/Popular/PopularMovie";
 import PeopleDatiels from "./NavbarRouts/Poeples/PeopleDatiels";
+import TVSeriesDetails from "./NavbarRouts/Poeples/TVSeriesDetails";
+import Punjabi from "./NavbarRouts/MoviesCategories/punjabi/Punjabi";
+import English from "./NavbarRouts/MoviesCategories/english/English";
+import Hindi from "./NavbarRouts/MoviesCategories/hindi/Hindi";
+import Cartoons from "./NavbarRouts/cartoons/Cartoons";
 
 function App() {
   const [isDarkMode, setIsDarkMode] = useState(false);
@@ -53,6 +58,14 @@ function App() {
           <Route path="/more/trending" element={<TrendingMore/> } />
           <Route path="/more/topRated" element={<TopRatedMore />} />
           <Route path="/more/upComing" element={<UpComingMore/> } />
+
+          <Route path="/detail/tv-series/:seriesId" element={<TVSeriesDetails/>}/>
+
+          {/* categories movies */}
+          <Route path="/movies/punjabi-movies" element={<Punjabi/>}/>
+          <Route path="/movies/english-movies" element={<English/>}/>
+          <Route path="/movies/hindi-movies" element={<Hindi/>}/>
+          <Route path="/all-cartoons" element={<Cartoons/>}/>
         </Routes>
        
       </Router>

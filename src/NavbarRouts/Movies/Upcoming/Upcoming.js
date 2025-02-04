@@ -8,7 +8,7 @@ const Upcoming = () => {
     const [movies, setMovies] = useState([]);
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1); // To track the current page
-    const [hasMore, setHasMore] = useState(true); // To check if more movies are available
+    const [hasMore, setHasMore] = useState(true); 
     const navigate = useNavigate()
     useEffect(() => {
         // Fetch popular movies from the API
@@ -44,8 +44,18 @@ const Upcoming = () => {
     };
 
     if (loading && page === 1) {
-        return <CircularProgress />;
+        return (
+            <Box 
+                display="flex" 
+                justifyContent="center" 
+                alignItems="center" 
+                height="100vh"
+            >
+                <CircularProgress />
+            </Box>
+        );
     }
+    
 
     const handleCardClick = (id) => {
         // Navigate to /zxyxvyXdF/:id
@@ -133,7 +143,7 @@ const Upcoming = () => {
                             sx={{ backgroundColor: '#0fadbf', color: 'white', width:'100%', marginBottom:'20px' }}
                             onClick={loadMoreMovies}
                         >
-                            Load More
+                            Load More {movies.total_results}
                         </Button>
                     </div>
                 )}

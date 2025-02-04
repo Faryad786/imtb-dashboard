@@ -27,7 +27,7 @@ const Footer = () => {
                                     marginRight:'6px'
                                 }}
                             >
-                                IMTB
+                                NestFllix
                             </Typography>
                             <Box sx={{ background: "linear-gradient(to right, #0fadbf 20%, yellow 80%)", width: '60px', height: '20px', borderRadius: '20px', marginTop:'6px' }}></Box>
                         </Box>
@@ -42,7 +42,7 @@ const Footer = () => {
                                     fontWeight: 'bold'
                                 }}
                             >
-                                International Movies<br /> Television Bureau
+                                For Movies<br /> Production
                             </Typography>
                         </Box>
                     </Box>
