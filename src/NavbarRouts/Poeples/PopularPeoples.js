@@ -44,7 +44,11 @@ const PopularPeoples = () => {
     };
 
     if (loading && page === 1) {
-        return <CircularProgress />;
+        return (
+        <Box sx={{ display: "flex", justifyContent: "center", alignItems: "center", height: "100vh" }}>
+        <CircularProgress />;
+        </Box>
+        )
     }
 
   
@@ -60,7 +64,7 @@ const PopularPeoples = () => {
                 </Typography>
                 <Grid container spacing={3}>
                     {movies.map((detail) => (
-                        <Grid item xs={12} sm={6} md={2} key={detail.id}>
+                        <Grid item xs={6} sm={3} md={2} key={detail.id}>
                             <Card
                                 sx={{
                                     backgroundColor: 'white',

@@ -70,7 +70,7 @@ const Upcoming = () => {
                 </Typography>
                 <Grid container spacing={3}>
                     {movies.map((movie) => (
-                        <Grid item xs={12} sm={6} md={2} key={movie.id}>
+                        <Grid item xs={6} sm={3} md={2} key={movie.id}>
                             <Card
                                 sx={{
                                     cursor:'pointer',

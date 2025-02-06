@@ -13,9 +13,11 @@ const PeopleDetails = () => {
     const [error, setError] = useState(null);
     const [isExpanded, setIsExpanded] = useState(false);
     const navigate = useNavigate();
+
     const toggleBiography = () => {
         setIsExpanded(!isExpanded);
     };
+
     useEffect(() => {
         const fetchMovieDetails = async () => {
             try {
@@ -34,27 +36,26 @@ const PeopleDetails = () => {
     if (error) return <Typography variant="h6" color="error" sx={{ textAlign: 'center', marginTop: '50px' }}>{error}</Typography>;
     if (!movie) return <Typography variant="h6" sx={{ textAlign: 'center', marginTop: '50px' }}>No movie data available.</Typography>;
 
-
     const handleCardClick = (id) => {
-        // Navigate to /zxyxvyXdF/:id
         navigate(`/zxyxvyXdF/${id}`);
     };
-
 
     const handleTvSeriesClick = (seriesId) => {
         navigate(`/detail/tv-series/${seriesId}`);
     };
+
     return (
         <Container sx={{ marginTop: '30px' }}>
-            <Box sx={{ display: "flex", flexWrap: 'wrap' }}> {/* Removed the gap property */}
+            <Box sx={{ display: "flex", flexDirection: { xs: 'column', sm: 'row' }, flexWrap: 'wrap', gap: { xs: '20px', sm: '40px' } }}>
                 {/* Image & Personal Info */}
-                <Box sx={{ flex: '1 1 300px' }}>
+                <Box >
                     <motion.img
                         src={`https://image.tmdb.org/t/p/w500${movie.profile_path}`}
                         alt={movie.name}
                         style={{
-                            width: "300px",
-                            height: "450px",
+                            width: "100%",
+                            maxWidth: "300px",
+                            height: "auto",
                             borderRadius: "8px",
                             boxShadow: '0 4px 12px rgba(15, 173, 191, 0.5)',
                         }}
@@ -63,17 +64,23 @@ const PeopleDetails = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.5 }}
                     />
-
                     {/* Personal Info */}
-                    <Box sx={{ marginTop: "20px", background: "#f9f9f9", padding: "15px", borderRadius: "8px", width: '300px' }}>
+                    <Box sx={{
+                        marginTop: "20px",
+                        background: "#f9f9f9",
+                        padding: "15px",
+                        borderRadius: "8px",
+                        width: '100%',
+                        maxWidth: '300px',
+                        
+                    }}>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: "#0fadbf" }}>
                             Personal Info
                         </Typography>
                         <Typography variant="body1"><strong>Department:</strong> {movie.known_for_department}</Typography>
                         <Typography variant="body1"><strong>Birthday:</strong> {movie.birthday}</Typography>
                         <Typography variant="body1"><strong>Place of Birth:</strong> {movie.place_of_birth}</Typography>
-                        <Typography variant="body1"><strong>Gender:</strong><span style={{color:'#0fadbf'}}> {detail.gender === 1 ? 'Female' : detail.gender === 2 ? 'Male' : 'Not specified'}</span></Typography>
-
+                        <Typography variant="body1"><strong>Gender:</strong><span style={{ color: '#0fadbf' }}> {detail.gender === 1 ? 'Female' : detail.gender === 2 ? 'Male' : 'Not specified'}</span></Typography>
                     </Box>
                 </Box>
 
@@ -82,6 +89,7 @@ const PeopleDetails = () => {
                     <Typography variant="h4" sx={{ fontWeight: "bold", color: "#0fadbf", marginBottom: '15px' }}>
                         {movie.name}
                     </Typography>
+
                     <Box sx={{ gap: "10px", marginTop: "5px" }}>
                         <Typography variant="h6" sx={{ fontWeight: "bold", color: "gray" }}>
                             Biography
@@ -90,39 +98,76 @@ const PeopleDetails = () => {
                             variant="body1"
                             sx={{
                                 color: 'grey',
-                                display: '-webkit-box',
-                                WebkitBoxOrient: 'vertical',
                                 WebkitLineClamp: isExpanded ? 'unset' : 3,
-                                overflow: 'hidden',
                                 textOverflow: 'ellipsis',
                             }}
                         >
                             {movie.biography}
                         </Typography>
-                        <Button variant='contained' onClick={toggleBiography}  sx={{ backgroundColor: '#0fadbf', color: 'white', marginBottom:'20px' }}>
+                        <Button variant='contained' onClick={toggleBiography} sx={{ backgroundColor: '#0fadbf', color: 'white', marginBottom: '20px' }}>
                             {isExpanded ? 'Show Less' : 'Read More'}
                         </Button>
                     </Box>
 
                     {/* Known For */}
-                    <Box sx={{ marginTop: '30px' }}>
+                    <>
+                <Box sx={{ marginTop: '30px' }}>
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: "gray" }}>
+                        Role in movies:
+                    </Typography>
+                    <Box
+                        sx={{
+                            overflowX: "auto",
+                            display: 'flex',
+                            gap: 2,
+                            padding: '10px',
+                            scrollbarColor: '#0fadbf transparent',
+                            scrollbarWidth: 'thin',
+                        }}
+                    >
+                        {movie.images && movie.images.map((credit, index) => (
+                            <Box key={index} sx={{ textAlign: "center", flex: "0 0 auto" }}>
+                                <Card sx={{
+                                    maxWidth: 150,
+                                    boxShadow: "0 4px 12px rgba(15, 173, 191, 0.5)",
+                                    borderRadius: "8px",
+                                    transition: "transform 0.3s ease-in-out",
+                                    cursor: 'pointer'
+                                }}
+                                    onClick={() => handleCardClick(credit.id)}
+                                >
+                                    <motion.div whileHover={{ scale: 1.05 }}>
+                                        <CardMedia
+                                            component="img"
+                                            height="250"
+                                            image={`https://image.tmdb.org/t/p/w500${credit.file_path}`}
+                                            alt={credit.title}
+                                            sx={{ borderRadius: "8px 8px 0 0", objectFit: "cover" }}
+                                        />
+                                    </motion.div>
+                                </Card>
+                            </Box>
+                        ))}
+                    </Box>
+                </Box>
+            </>
+            
+                    {/* <Box sx={{ marginTop: '30px' }}>
                         <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: "gray" }}>
                             Personal Images:
                         </Typography>
                         <Box
                             sx={{
                                 overflowX: "auto",
-                                whiteSpace: "nowrap",
-                                width: "100%",
-                                display: "flex",
-                                gap: 2,
-                                paddingBottom: 1,
-                                scrollbarColor: '#0fadbf transparent',
-                                scrollbarWidth: 'thin',
+                            display: 'flex',
+                            gap: 2,
+                            padding: '10px',
+                            scrollbarColor: '#0fadbf transparent',
+                            scrollbarWidth: 'thin',
                             }}
                         >
                             {movie.images && movie.images.map((image, index) => (
-                                <Box key={index} sx={{ textAlign: "center", flex: "0 0 auto" }}>
+                                <Box key={index} sx={{  flex: "0 0 auto" }}>
                                     <motion.img
                                         src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
                                         alt={image.title}
@@ -140,14 +185,14 @@ const PeopleDetails = () => {
                                 </Box>
                             ))}
                         </Box>
-                    </Box>
-
-
+                    </Box> */}
+                    
                 </Box>
-                {/* Known For Movies */}
-               
-                <Container>
-<Box sx={{ marginTop: '30px' }}>
+            </Box>
+
+            {/* Known For Movies */}
+            <Container>
+                <Box sx={{ marginTop: '30px' }}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: "gray" }}>
                         Role in movies:
                     </Typography>
@@ -168,9 +213,9 @@ const PeopleDetails = () => {
                                     boxShadow: "0 4px 12px rgba(15, 173, 191, 0.5)",
                                     borderRadius: "8px",
                                     transition: "transform 0.3s ease-in-out",
-                                    cursor:'pointer'
+                                    cursor: 'pointer'
                                 }}
-                                onClick={() => handleCardClick(credit.id)}
+                                    onClick={() => handleCardClick(credit.id)}
                                 >
                                     <motion.div whileHover={{ scale: 1.05 }}>
                                         <CardMedia
@@ -186,9 +231,10 @@ const PeopleDetails = () => {
                         ))}
                     </Box>
                 </Box>
-                </Container>
+            </Container>
 
-                <Container>
+            {/* Known For TV Series */}
+            <Container>
                 <Box sx={{ marginTop: '30px' }}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold', marginBottom: '10px', color: "gray" }}>
                         Role in TV series:
@@ -210,9 +256,9 @@ const PeopleDetails = () => {
                                     boxShadow: "0 4px 12px rgba(15, 173, 191, 0.5)",
                                     borderRadius: "8px",
                                     transition: "transform 0.3s ease-in-out",
-                                    cursor:'pointer'
+                                    cursor: 'pointer'
                                 }}
-                                onClick={() => handleTvSeriesClick(credit.id)}
+                                    onClick={() => handleTvSeriesClick(credit.id)}
                                 >
                                     <motion.div whileHover={{ scale: 1.05 }}>
                                         <CardMedia
@@ -227,9 +273,8 @@ const PeopleDetails = () => {
                             </Box>
                         ))}
                     </Box>
-                    </Box>
-                    </Container>
-            </Box>
+                </Box>
+            </Container>
         </Container>
     );
 };

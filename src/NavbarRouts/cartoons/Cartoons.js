@@ -63,7 +63,7 @@ const Cartoons = () => {
                 </Typography>
                 <Grid container spacing={3}>
                     {movies.map((movie) => (
-                        <Grid item xs={12} sm={6} md={2} key={movie.movieTitle}>
+                        <Grid item xs={6} sm={3} md={2} key={movie.movieTitle}>
                             <Card
                                 sx={{
                                     cursor: 'pointer',
@@ -93,37 +93,47 @@ const Cartoons = () => {
             
             {/* Movie Modal */}
             <Modal open={!!selectedMovie} >
-                <Box sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: '60%',
-                    height:'80%',
-                    bgcolor: 'background.paper',
-                    boxShadow: 24,
-                    p: 2,
-                    borderRadius: 2,
-                }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                        <Typography variant="h6" sx={{ color: '#0fadbf', fontWeight: 'bold' }}>
-                            {selectedMovie?.movieTitle}
-                        </Typography>
-                        <IconButton onClick={handleCloseModal}>
-                            <Close />
-                        </IconButton>
-                    </Box>
-                    <iframe
-                        width="100%"
-                        height="80%"
-                        src={selectedMovie?.trailerKey}
-                        title={selectedMovie?.movieTitle}
-                        frameBorder="0"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                    ></iframe>
-                </Box>
-            </Modal>
+    <Box
+        sx={{
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: '60%',
+            height: '100%',
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: 2,
+            borderRadius: 2,
+            "@media (max-width:600px)": {
+                width: '90%',
+                height: '70%',
+                p: 1,
+            },
+        }}
+    >
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+            <Typography variant="h6" sx={{ color: '#0fadbf', fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', maxWidth: '70%' }}>
+                {selectedMovie?.movieTitle}
+            </Typography>
+            <IconButton onClick={handleCloseModal}>
+                <Close />
+            </IconButton>
+        </Box>
+
+        {/* Trailer Video */}
+        <iframe
+            width="100%"
+            height="80%"
+            src={selectedMovie?.trailerKey}
+            title={selectedMovie?.movieTitle}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+        ></iframe>
+    </Box>
+</Modal>
+
         </div>
     );
 };

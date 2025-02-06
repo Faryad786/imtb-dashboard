@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Typography, Container, Box, CircularProgress } from '@mui/material';
+import { Typography, Container, Box, CircularProgress, useMediaQuery } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
@@ -11,7 +11,7 @@ const PopularMovies = () => {
   const [totalPages, setTotalPages] = useState(1); // Track total pages
   const navigate = useNavigate();
   const scrollContainerRef = useRef(null); // Reference to the scroll container
-
+  const isMobile = useMediaQuery('(max-width:600px)');
   const fetchMovies = async (pageNumber) => {
     try {
       const url = `${process.env.REACT_APP_API_URL}/api/tmdb/popular?page=${pageNumber}`;
@@ -99,8 +99,8 @@ const PopularMovies = () => {
               <Box
                 key={movie.id}
                 sx={{
-                  minWidth: '14.28%',
-                  maxWidth: '14.28%',
+                  minWidth: isMobile ? '50%' : '14.28%', 
+                  maxWidth: isMobile ? '50%' : '14.28%',
                   textAlign: 'center',
                   flexShrink: 0,
                   cursor: 'pointer',

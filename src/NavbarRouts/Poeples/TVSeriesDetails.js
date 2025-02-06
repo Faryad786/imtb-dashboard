@@ -51,12 +51,13 @@ const TVSeriesDetails = () => {
     return (
         <div style={{ padding: '10px' }}>
 
-            <Box sx={{ display: "flex", flexWrap: 'wrap' }}>
+            <Box sx={{ display: "flex", flexWrap: 'wrap', width: '100%' }}>
                 <Box
                     sx={{
                         display: "flex",
-                        gap: "20px",
-                        width: '100%',
+                        flexDirection: { xs: "column", md: "row" },
+                        gap: { xs: "15px", md: "20px" },
+
                         borderRadius: "10px",
                         position: "relative",
                         backgroundImage: `url(https://image.tmdb.org/t/p/w1280${series.backdrop_path})`,
@@ -76,15 +77,17 @@ const TVSeriesDetails = () => {
                     }}
                 >
                     {/* Main Content */}
-                    <Box sx={{ display: "flex", gap: "20px", zIndex: 2 }}>
+                    <Box sx={{ display: "flex", flexDirection: { xs: "column", md: "row" }, gap: 2, zIndex: 2 }}>
                         <motion.img
                             src={`https://image.tmdb.org/t/p/w500${series.poster_path}`}
                             alt={series.name}
                             style={{
-                                width: "300px",
-                                height: "450px",
+                                width: "100%",
+                                maxWidth: "300px",
+                                height: "auto",
                                 borderRadius: "8px",
-                                boxShadow: '0 4px 12px rgba(15, 173, 191, 0.5)'
+                                boxShadow: '0 4px 12px rgba(15, 173, 191, 0.5)',
+                                marginBottom: { xs: "15px", md: "0" },
                             }}
                             whileHover={{ scale: 1.05, boxShadow: "0 15px 25px rgba(0, 0, 0, 0.4)" }}
                             initial={{ opacity: 0, y: 20 }}
@@ -92,7 +95,7 @@ const TVSeriesDetails = () => {
                             transition={{ duration: 0.5 }}
                         />
                         <Box sx={{ flex: 1 }}>
-                            <Typography variant="h4" sx={{ fontWeight: "bold", color: "#0fadbf" }}>
+                            <Typography variant="h4" sx={{ fontWeight: "bold", color: "#0fadbf", fontSize: { xs: "1.5rem", md: "2rem" } }}>
                                 {series.name}
                             </Typography>
 
@@ -122,30 +125,35 @@ const TVSeriesDetails = () => {
                                         })}
                                     />
                                 </Box>
-                                <Typography variant="h6" sx={{ marginLeft: "10px", color: 'white' }}>
+                                <Typography variant="h6" sx={{ marginLeft: "10px", color: 'white', fontSize: { xs: "14px", md: "16px" } }}>
                                     Watch Rating:{" "}
                                     <span style={{ color: "#0fadbf" }}>{series.vote_average}</span>
                                 </Typography>
                             </Box>
+
                             <Typography
                                 variant="h5"
-                                sx={{ marginTop: "15px", fontWeight: "bold", color: "gray" }}
+                                sx={{ marginTop: "15px", fontWeight: "bold", color: "gray", fontSize: { xs: "1.25rem", md: "1.5rem" } }}
                             >
                                 Overview
                             </Typography>
-                            <Typography variant="h6" sx={{ marginTop: "5px", fontSize: "15px", color: 'white' }}>
+                            <Typography variant="h6" sx={{ marginTop: "5px", fontSize: { xs: "13px", md: "15px" }, color: 'white' }}>
                                 {series.overview}
                             </Typography>
 
-                            <Box sx={{ display: "flex" }}>
-
-
+                            <Box sx={{ display: "flex", marginTop: "20px" }}>
                                 {/* Play Trailer Button */}
                                 <Button
                                     variant="contained"
                                     color="primary"
                                     onClick={fetchTrailer}
-                                    sx={{ backgroundColor: "#0fadbf", color: "white", fontWeight: "bold", marginTop: '20px' }}
+                                    sx={{
+                                        backgroundColor: "#0fadbf",
+                                        color: "white",
+                                        fontWeight: "bold",
+                                        width: "fit-content",
+                                        marginTop: { xs: "10px", md: "20px" },
+                                    }}
                                 >
                                     Play Trailer
                                 </Button>
@@ -166,6 +174,11 @@ const TVSeriesDetails = () => {
                                         maxWidth: "800px",
                                         borderRadius: "10px",
                                         outline: "none",
+                                        // Mobile responsiveness: adjust width on small screens
+                                        "@media (max-width:600px)": {
+                                            width: "95%",
+                                            padding: 1,
+                                        },
                                     }}
                                 >
                                     {/* Header */}
@@ -178,7 +191,7 @@ const TVSeriesDetails = () => {
                                             borderBottom: "1px solid rgba(255,255,255,0.2)",
                                         }}
                                     >
-                                        <Typography variant="h6" color="white">
+                                        <Typography variant="h6" color="white" sx={{ maxWidth: "80%" }}>
                                             {series.name}
                                         </Typography>
                                         <IconButton onClick={() => setOpenModal(false)} sx={{ color: "#fff" }}>
@@ -206,12 +219,9 @@ const TVSeriesDetails = () => {
                             </Modal>
 
 
-
                             <Box
-                                sx={{ display: "flex", justifyContent: "flex-end", marginTop: "20px" }}
+                                sx={{ display: "flex", marginTop: "20px" }}
                             >
-
-
                                 {/* Directors */}
                                 {series.created_by?.length > 0 && (
                                     <Box>
@@ -236,7 +246,7 @@ const TVSeriesDetails = () => {
                                                 <Typography
                                                     variant="h6"
                                                     sx={{
-                                                        fontSize: "15px",
+                                                        fontSize: { xs: "13px", md: "15px" },
                                                         fontWeight: "bold",
                                                         color: "#0fadbf",
                                                     }}
@@ -247,13 +257,12 @@ const TVSeriesDetails = () => {
                                         ))}
                                     </Box>
                                 )}
-
                             </Box>
-
                         </Box>
                     </Box>
                 </Box>
             </Box>
+
             <Container >
                 {/* Cast Section */}
                 <Box sx={{ marginTop: '40px' }}>

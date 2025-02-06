@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Grid, Card, CardMedia, CardContent, Typography, CircularProgress, Container, Button, Box, Modal, IconButton } from '@mui/material';
+import { Grid, Card, CardMedia, CardContent, Typography, CircularProgress, Container, Button, Box, Modal, IconButton, useMediaQuery } from '@mui/material';
 import axios from 'axios';
 import { Close } from '@mui/icons-material';
 
@@ -10,7 +10,7 @@ const English = () => {
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(true);
     const [selectedMovie, setSelectedMovie] = useState(null);
-   
+    const isMobile = useMediaQuery('(max-width:600px)');
 
     useEffect(() => {
         const fetchMovies = async () => {
@@ -61,9 +61,11 @@ const English = () => {
                 </Typography>
                 <Grid container spacing={3}>
                     {movies.map((movie) => (
-                        <Grid item xs={12} sm={6} md={2} key={movie.id}>
+                        <Grid item xs={6} sm={3} md={2} key={movie.id}>
                             <Card
                                 sx={{
+                                    minWidth: isMobile ? '100%' : '100%',
+                                    maxWidth: isMobile ? '100%' : '100%',
                                     cursor: 'pointer',
                                     backgroundColor: 'white',
                                     boxShadow: '0 4px 12px rgba(15, 173, 191, 0.5)',
@@ -97,17 +99,19 @@ const English = () => {
             {/* Movie Modal */}
             <Modal open={!!selectedMovie} >
                 <Box sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    width: '60%',
-                    height:'80%',
-                    bgcolor: 'background.paper',
-                    boxShadow: 24,
-                    p: 2,
-                    borderRadius: 2,
-                }}>
+            position: 'absolute',
+            top: '50%',
+            left: '50%',
+            transform: 'translate(-50%, -50%)',
+            width: { xs: '90%', md: '60%' },  // 90% width on mobile, 60% on larger screens
+            height: { xs: '90%', md: '80%' }, // 90% height on mobile, 80% on larger screens
+            bgcolor: 'background.paper',
+            boxShadow: 24,
+            p: { xs: 1.5, md: 2 }, // Adjust padding for mobile
+            borderRadius: 2,
+            display: 'flex',
+            flexDirection: 'column',
+        }}>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
                         <Typography variant="h6" sx={{ color: '#0fadbf', fontWeight: 'bold' }}>
                             {selectedMovie?.title}

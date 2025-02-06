@@ -54,12 +54,7 @@ const Footer = () => {
                         <Link href="#" color="inherit" sx={{ marginRight: '20px' }}>
                             About
                         </Link>
-                        <Link href="#" color="inherit" sx={{ marginRight: '20px' }}>
-                            Contact
-                        </Link>
-                        <Link href="#" color="inherit">
-                            Privacy Policy
-                        </Link>
+                        
                     </Box>
                 </Box>
             </Container>

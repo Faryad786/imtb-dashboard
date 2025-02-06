@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
-import { Typography, Container, Box, Modal, IconButton, CircularProgress } from '@mui/material';
+import { Typography, Container, Box, Modal, IconButton, CircularProgress, useMediaQuery } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 
@@ -11,7 +11,7 @@ const RecentMovies = () => {
     const [selectedMovie, setSelectedMovie] = useState(null);
    
     const scrollContainerRef = useRef(null);
-
+    const isMobile = useMediaQuery('(max-width:600px)');
     const fetchMovies = async (pageNumber) => {
         try {
             const url = `${process.env.REACT_APP_API_URL}/api/tmdb/recently-add/movies?page=${pageNumber}`;
@@ -78,78 +78,96 @@ const RecentMovies = () => {
                 </Box>
             ) : (
                 <Box
-                    ref={scrollContainerRef}
+            ref={scrollContainerRef}
+            sx={{
+                display: 'flex',
+                overflowX: 'auto',
+                gap: 2,
+                padding: '10px',
+                scrollbarColor: '#0fadbf transparent',
+                scrollbarWidth: 'thin',
+            }}
+        >
+            {movies.map((movie) => (
+                <Box
+                    key={movie.id}
                     sx={{
-                        display: 'flex',
-                        overflowX: 'auto',
-                        gap: 2,
-                        padding: '10px',
-                        scrollbarColor: '#0fadbf transparent',
-                        scrollbarWidth: 'thin',
+                        minWidth: isMobile ? '50%' : '14.28%', // 50% width for mobile, 14.28% for large screens
+                        maxWidth: isMobile ? '50%' : '14.28%',
+                        textAlign: 'center',
+                        flexShrink: 0,
+                        cursor: 'pointer',
+                        position: 'relative',
+                        boxShadow: '0 4px 12px rgba(15, 173, 191, 0.5)',
+                        transition: 'transform 0.3s ease, box-shadow 0.3s ease',
+                        '&:hover': {
+                            transform: 'scale(1.05)',
+                        },
                     }}
+                    onClick={() => handleMovieClick(movie)}
                 >
-                    {movies.map((movie) => (
-                        <Box
-                            key={movie.id}
-                            sx={{
-                                minWidth: '14.28%',
-                                maxWidth: '14.28%',
-                                textAlign: 'center',
-                                flexShrink: 0,
-                                cursor: 'pointer',
-                                position: 'relative',
-                                boxShadow: '0 4px 12px rgba(15, 173, 191, 0.5)',
-                                transition: 'transform 0.3s ease, box-shadow 0.3s ease',
-                                '&:hover': {
-                                    transform: 'scale(1.05)',
-                                },
-                            }}
-                            onClick={() => handleMovieClick(movie)}
-                        >
-                            <img
-                                src={movie.posterimage || 'https://via.placeholder.com/150'}
-                                alt={movie.title || 'Movie poster'}
-                                style={{ width: '100%', height: '250px', borderRadius: '8px' }}
-                            />
+                    <img
+                        src={movie.posterimage || 'https://via.placeholder.com/150'}
+                        alt={movie.title || 'Movie poster'}
+                        style={{ width: '100%', height: '250px', borderRadius: '8px' }}
+                    />
 
-                            <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#0fadbf', padding: '10px', fontSize: '12px' }}>
-                                {movie.title || 'Untitled'}
-                            </Typography>
-                        </Box>
-                    ))}
+                    <Typography variant="h6" sx={{ fontWeight: 'bold', color: '#0fadbf', padding: '10px', fontSize: '12px' }}>
+                        {movie.title || 'Untitled'}
+                    </Typography>
                 </Box>
+            ))}
+        </Box>
             )}
 
             {/* Movie Modal */}
             <Modal open={Boolean(selectedMovie)} >
-                <Box sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', width: '60%', bgcolor: 'black', boxShadow: 24, p: 2, height: '80%' }}>
-                    <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-                        <Typography variant="h6" sx={{ color: '#fff', fontWeight: 'bold' }}>
-                            {selectedMovie?.title || 'Movie Title'}
-                        </Typography>
-                        <IconButton onClick={handleClose} sx={{ color: '#fff' }}>
-                            <CloseIcon />
-                        </IconButton>
-                    </Box>
-                    <Box sx={{ position: 'relative', width: '100%', height: '100%' }}>
-                        {selectedMovie?.links ? (
-                            <iframe
-                                src={selectedMovie.links}
-                                width="100%"
-                                height="80%"
-                                title={selectedMovie?.title || 'Movie'}
-                                frameBorder="0"
-                                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                                allowFullScreen
-                            />
-                        ) : (
-                            <Typography variant="h6" sx={{ color: '#fff', textAlign: 'center' }}>
-                                No Video Available
-                            </Typography>
-                        )}
-                    </Box>
+            <Box
+                sx={{
+                    position: "absolute",
+                    top: "50%",
+                    left: "50%",
+                    transform: "translate(-50%, -50%)",
+                    width: isMobile ? "90%" : "60%",
+                    bgcolor: "black",
+                    boxShadow: 24,
+                    p: 2,
+                    height: isMobile ? "70%" : "80%",
+                    display: "flex",
+                    flexDirection: "column",
+                }}
+            >
+                {/* Modal Header */}
+                <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mb: 2 }}>
+                    <Typography variant="h6" sx={{ color: "#0fadbf", fontWeight: "bold" }}>
+                        {selectedMovie?.title || "Movie Title"}
+                    </Typography>
+                    <IconButton onClick={handleClose} sx={{ color: "#0fadbf" }}>
+                        <CloseIcon />
+                    </IconButton>
                 </Box>
-            </Modal>
+
+                {/* Video Content */}
+                <Box sx={{ flex: 1, display: "flex", justifyContent: "center", alignItems: "center" }}>
+                    {selectedMovie?.links ? (
+                        <iframe
+                            src={selectedMovie.links}
+                            width="100%"
+                            height="100%"
+                            title={selectedMovie?.title || "Movie"}
+                            frameBorder="0"
+                            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                            allowFullScreen
+                            style={{ borderRadius: "8px" }}
+                        />
+                    ) : (
+                        <Typography variant="h6" sx={{ color: "#fff", textAlign: "center" }}>
+                            No Video Available
+                        </Typography>
+                    )}
+                </Box>
+            </Box>
+        </Modal>
         </Container>
     );
 };
